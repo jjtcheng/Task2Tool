@@ -1,0 +1,156 @@
+{
+  "name": "scene_analysis_and_tool_feasibility",
+  "strict": true,
+  "schema": {
+    "type": "object",
+    "properties": {
+      "scene_description": {
+        "type": "object",
+        "description": "Detailed analysis of the scene containing objects and their attributes.",
+        "properties": {
+          "objects": {
+            "type": "array",
+            "description": "List of objects present in the scene.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "description": "Name of the object."
+                },
+                "size": {
+                  "type": "string",
+                  "description": "Size of the object."
+                },
+                "position": {
+                  "type": "string",
+                  "description": "Position of the object in the scene."
+                },
+                "material": {
+                  "type": "string",
+                  "description": "Material from which the object is made."
+                },
+                "spatial_relationships": {
+                  "type": "array",
+                  "description": "List of spatial relationships with all of the other objects, specifying each object.",
+                  "items": {
+                    "type": "string",
+                    "description": "Positioning relative to all of the other objects, specifying each object."
+                  }
+                }
+              },
+              "required": [
+                "name",
+                "size",
+                "position",
+                "material",
+                "spatial_relationships"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "objects"
+        ],
+        "additionalProperties": false
+      },
+      "thought_process": {
+        "type": "object",
+        "description": "Logical reasoning steps connecting scene analysis to feasibility conclusions, such as potential tools consideration",
+        "properties": {
+          "chain_of_thought": {
+            "type": "array",
+            "description": "Reasoning steps",
+            "items": {
+              "type": "string",
+              "description": "Reasoning"
+            }
+          }
+        },
+        "required": ["chain_of_thought"],
+        "additionalProperties": false
+      },
+      "feasibility_check": {
+        "type": "object",
+        "description": "Determine whether task is already feasible without printing tool, feasible if print tool within constraints, or totally infeasible.",
+        "properties": {
+          "task_feasible": {
+            "type": "boolean",
+            "description": "Indicates whether the task is feasible."
+          },
+          "feasibility_outcome": {
+            "type": "object",
+            "description": "Outcome of the feasibility check.",
+            "properties": {
+              "outcome": {
+                "type": "string",
+                "enum": [
+                  "tool_not_needed",
+                  "task_infeasible",
+                  "new_tool_needed"
+                ],
+                "description": "Result of the feasibility check."
+              },
+              "explanation": {
+                "type": "string",
+                "description": "Reason for the outcome."
+              },
+              "proposed_tool": {
+                "type": "object",
+                "description": "Details of the new tool that can be designed if needed.",
+                "properties": {
+                  "design": {
+                    "type": "string",
+                    "description": "Detailed design of the proposed tool."
+                  },
+                  "features": {
+                    "type": "string",
+                    "description": "Required features of the tool."
+                  },
+                  "dimensions": {
+                    "type": "string",
+                    "description": "Dimensions of the new tool."
+                  },
+                  "tool_name": {
+                    "type": "string",
+                    "description": "Short, simple tool name. Use standardized tool nomenclature. Only mention the tool itself and nothing else."
+                  },
+                  "tool_type": {
+                    "type": "string",
+                    "description": "General category of the tool (for example: screwdriver, wrench, hammer etc)"
+                  }
+                },
+                "required": [
+                  "design",
+                  "features",
+                  "dimensions",
+                  "tool_name",
+                  "tool_type"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "outcome",
+              "explanation",
+              "proposed_tool"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "task_feasible",
+          "feasibility_outcome"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "required": [
+      "scene_description",
+      "thought_process",
+      "feasibility_check"
+    ],
+    "additionalProperties": false
+  }
+}
